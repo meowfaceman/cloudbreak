@@ -16,6 +16,7 @@ public class KnoxConfigProvider implements BlueprintComponentConfigProvider {
 
     private static final String KNOX_GATEWAY = "KNOX_GATEWAY";
 
+    // TODO-MASTER-REPAIR knox should be enabled
     @Override
     public BlueprintTextProcessor customTextManipulation(TemplatePreparationObject source, BlueprintTextProcessor blueprintProcessor) {
         Set<String> hostGroupNames = source.getHostgroupViews()
