@@ -8,6 +8,7 @@ import com.sequenceiq.it.IntegrationTestContext;
 import com.sequenceiq.it.cloudbreak.newway.action.Action;
 import com.sequenceiq.it.cloudbreak.newway.action.imagecatalog.ImageCatalogPostAction;
 import com.sequenceiq.it.cloudbreak.newway.context.TestContext;
+import com.sequenceiq.it.cloudbreak.newway.entity.ImageCatalogEntity;
 import com.sequenceiq.it.cloudbreak.newway.v3.ImageCatalogV3Action;
 
 public class ImageCatalog extends ImageCatalogEntity {

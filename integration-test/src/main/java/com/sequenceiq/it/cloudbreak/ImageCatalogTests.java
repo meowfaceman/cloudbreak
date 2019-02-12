@@ -20,6 +20,9 @@ import com.sequenceiq.it.cloudbreak.newway.CloudbreakTest;
 import com.sequenceiq.it.cloudbreak.newway.ImageCatalog;
 import com.sequenceiq.it.util.LongStringGeneratorUtil;
 
+
+//TODO This test and integration-test/src/main/java/com/sequenceiq/it/cloudbreak/newway/ImageCatalog.java integration-test/src/main/java/com/sequenceiq/it/cloudbreak/newway/ImageCatalogAction.java class should be DELETED
+
 public class ImageCatalogTests extends CloudbreakTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageCatalogTests.class);
 

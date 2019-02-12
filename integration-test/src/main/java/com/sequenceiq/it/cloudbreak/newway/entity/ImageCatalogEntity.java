@@ -1,4 +1,4 @@
-package com.sequenceiq.it.cloudbreak.newway;
+package com.sequenceiq.it.cloudbreak.newway.entity;
 
 import static com.sequenceiq.it.cloudbreak.newway.log.Log.logJSON;
 import static com.sequenceiq.it.cloudbreak.newway.util.ResponseUtil.getErrorMessage;
@@ -10,6 +10,9 @@ import com.sequenceiq.cloudbreak.api.endpoint.v4.imagecatalog.requests.ImageCata
 import com.sequenceiq.cloudbreak.api.endpoint.v4.imagecatalog.responses.ImageCatalogV4Response;
 import com.sequenceiq.cloudbreak.api.endpoint.v4.imagecatalog.responses.ImagesV4Response;
 import com.sequenceiq.it.cloudbreak.newway.context.MockedTestContext;
+import com.sequenceiq.it.cloudbreak.newway.AbstractCloudbreakEntity;
+import com.sequenceiq.it.cloudbreak.newway.CloudbreakClient;
+import com.sequenceiq.it.cloudbreak.newway.Prototype;
 import com.sequenceiq.it.cloudbreak.newway.context.Purgable;
 import com.sequenceiq.it.cloudbreak.newway.context.TestContext;
 
@@ -22,12 +25,12 @@ public class ImageCatalogEntity extends AbstractCloudbreakEntity<ImageCatalogV4R
 
     private ImagesV4Response imagesV4Response;
 
-    ImageCatalogEntity(ImageCatalogV4Request request, TestContext testContext) {
-        super(request, testContext);
-    }
-
     public ImageCatalogEntity(TestContext testContext) {
         super(new ImageCatalogV4Request(), testContext);
+    }
+
+    public ImageCatalogEntity(ImageCatalogV4Request imageCatalogV4Request, TestContext testContext) {
+        super(imageCatalogV4Request, testContext);
     }
 
     public ImageCatalogEntity() {
@@ -62,7 +65,7 @@ public class ImageCatalogEntity extends AbstractCloudbreakEntity<ImageCatalogV4R
 
     @Override
     public void cleanUp(TestContext context, CloudbreakClient cloudbreakClient) {
-        deleteV2(context, this, cloudbreakClient);
+        delete(context, this.getResponse(), cloudbreakClient);
     }
 
     public static ImageCatalogEntity putSetDefaultByName(TestContext testContext, ImageCatalogEntity entity, CloudbreakClient cloudbreakClient)
@@ -71,11 +74,6 @@ public class ImageCatalogEntity extends AbstractCloudbreakEntity<ImageCatalogV4R
                 cloudbreakClient.getCloudbreakClient()
                         .imageCatalogV4Endpoint().setDefault(cloudbreakClient.getWorkspaceId(), entity.getRequest().getName()));
         logJSON(LOGGER, "ImageCatalog set to default: ", entity.getResponse());
-        return entity;
-    }
-
-    public static ImageCatalogEntity deleteV2(TestContext testContext, ImageCatalogEntity entity, CloudbreakClient cloudbreakClient) {
-        cloudbreakClient.getCloudbreakClient().imageCatalogV4Endpoint().delete(cloudbreakClient.getWorkspaceId(), entity.getName());
         return entity;
     }
 

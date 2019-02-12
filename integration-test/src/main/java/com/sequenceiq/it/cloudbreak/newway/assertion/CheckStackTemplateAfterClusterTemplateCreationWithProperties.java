@@ -16,7 +16,7 @@ import com.sequenceiq.cloudbreak.api.endpoint.v4.stacks.request.cluster.ambari.s
 import com.sequenceiq.cloudbreak.api.endpoint.v4.stacks.request.instancegroup.InstanceGroupV4Request;
 import com.sequenceiq.cloudbreak.api.endpoint.v4.util.requests.SecurityRuleV4Request;
 import com.sequenceiq.it.cloudbreak.newway.CloudbreakClient;
-import com.sequenceiq.it.cloudbreak.newway.ImageCatalogEntity;
+import com.sequenceiq.it.cloudbreak.newway.entity.ImageCatalogEntity;
 import com.sequenceiq.it.cloudbreak.newway.cloud.HostGroupType;
 import com.sequenceiq.it.cloudbreak.newway.cloud.v2.MockCloudProvider;
 import com.sequenceiq.it.cloudbreak.newway.context.TestContext;

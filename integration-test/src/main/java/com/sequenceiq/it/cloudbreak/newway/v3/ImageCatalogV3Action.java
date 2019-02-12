@@ -1,7 +1,7 @@
 package com.sequenceiq.it.cloudbreak.newway.v3;
 
 import static com.sequenceiq.it.cloudbreak.CloudbreakITContextConstants.CLOUDPROVIDER;
-import static com.sequenceiq.it.cloudbreak.newway.ImageCatalogEntity.IMAGE_CATALOG_URL;
+import static com.sequenceiq.it.cloudbreak.newway.entity.ImageCatalogEntity.IMAGE_CATALOG_URL;
 import static com.sequenceiq.it.cloudbreak.newway.log.Log.logJSON;
 
 import java.util.HashSet;
@@ -10,7 +10,7 @@ import com.sequenceiq.it.IntegrationTestContext;
 import com.sequenceiq.it.cloudbreak.newway.CloudbreakClient;
 import com.sequenceiq.it.cloudbreak.newway.CloudbreakTest;
 import com.sequenceiq.it.cloudbreak.newway.Entity;
-import com.sequenceiq.it.cloudbreak.newway.ImageCatalogEntity;
+import com.sequenceiq.it.cloudbreak.newway.entity.ImageCatalogEntity;
 import com.sequenceiq.it.cloudbreak.newway.log.Log;
 
 public class ImageCatalogV3Action {

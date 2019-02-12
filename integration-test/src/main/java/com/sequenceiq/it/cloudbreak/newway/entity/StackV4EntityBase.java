@@ -28,7 +28,6 @@ import com.sequenceiq.cloudbreak.api.endpoint.v4.stacks.response.instancegroup.I
 import com.sequenceiq.cloudbreak.api.endpoint.v4.stacks.response.instancegroup.instancemetadata.InstanceMetaDataV4Response;
 import com.sequenceiq.it.cloudbreak.newway.AbstractCloudbreakEntity;
 import com.sequenceiq.it.cloudbreak.newway.EnvironmentEntity;
-import com.sequenceiq.it.cloudbreak.newway.ImageCatalogEntity;
 import com.sequenceiq.it.cloudbreak.newway.ImageSettingsEntity;
 import com.sequenceiq.it.cloudbreak.newway.SecurityRulesEntity;
 import com.sequenceiq.it.cloudbreak.newway.context.MockedTestContext;
