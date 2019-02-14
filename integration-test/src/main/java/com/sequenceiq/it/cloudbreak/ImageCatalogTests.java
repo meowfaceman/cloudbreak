@@ -5,7 +5,6 @@ import static com.sequenceiq.it.cloudbreak.CloudbreakITContextConstants.CLOUDPRO
 import java.util.Set;
 
 import javax.inject.Inject;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.ForbiddenException;
 
 import org.slf4j.Logger;
@@ -51,107 +50,7 @@ public class ImageCatalogTests extends CloudbreakTest {
     @Inject
     private LongStringGeneratorUtil longStringGeneratorUtil;
 
-    @Test
-    public void testCreateValidImageCatalog() throws Exception {
-        given(CloudbreakClient.created());
-        given(ImageCatalog.request()
-                .withName(VALID_IMAGECATALOG_NAME)
-                .withUrl(VALID_IMAGECATALOG_URL), "an imagecatalog request"
-        );
-        when(ImageCatalog.post(), "post the imagecatalog request");
-        then(ImageCatalog.assertThis(
-                (imageCatalog, t) -> Assert.assertEquals(imageCatalog.getResponse().getName(), VALID_IMAGECATALOG_NAME)), "check imagecatalog is created");
-    }
 
-    @Test(expectedExceptions = BadRequestException.class)
-    public void testCreateInvalidImageCatalogShortName() throws Exception {
-        given(CloudbreakClient.created());
-        given(ImageCatalog.request()
-                .withName(INVALID_IMAGECATALOG_NAME_SHORT)
-                .withUrl(VALID_IMAGECATALOG_URL), "an imagecatalog request with short name"
-        );
-        checkNameNotAssertEquals(INVALID_IMAGECATALOG_NAME_SHORT, "short name");
-    }
-
-    @Test(expectedExceptions = BadRequestException.class)
-    public void testCreateInvalidImageCatalogLongName() throws Exception {
-        given(CloudbreakClient.created());
-        given(ImageCatalog.request()
-                .withName(longStringGeneratorUtil.stringGenerator(101))
-                .withUrl(VALID_IMAGECATALOG_URL), "an imagecatalog request with long name"
-        );
-        checkNameNotAssertEquals(longStringGeneratorUtil.stringGenerator(101), "long name");
-    }
-
-    @Test(expectedExceptions = BadRequestException.class)
-    public void testCreateInvalidImageCatalogSpecName() throws Exception {
-        given(CloudbreakClient.created());
-        given(ImageCatalog.request()
-                .withName(SPECIAL_IMAGECATALOG_NAME)
-                .withUrl(VALID_IMAGECATALOG_URL), "an imagecatalog request with special name"
-        );
-        checkNameNotAssertEquals(SPECIAL_IMAGECATALOG_NAME, "special name");
-    }
-
-    // BUG-97072
-    @Test(expectedExceptions = BadRequestException.class, enabled = false)
-    public void testCreateInvalidImageCatalogUrl() throws Exception {
-        given(CloudbreakClient.created());
-        given(ImageCatalog.request()
-                .withName(VALID_IMAGECATALOG_NAME + "-url")
-                .withUrl("https://" + INVALID_IMAGECATALOG_URL), "an imagecatalog request with invalid url"
-        );
-        checkNameNotAssertEquals(VALID_IMAGECATALOG_NAME + "-url", "invalid url");
-    }
-
-    // BUG-97072
-    @Test(expectedExceptions = BadRequestException.class, enabled = false)
-    public void testCreateInvalidImageCatalogUrlInvalidJson() throws Exception {
-        given(CloudbreakClient.created());
-        given(ImageCatalog.request()
-                .withName(VALID_IMAGECATALOG_NAME + "-url-invalid-json")
-                .withUrl(INVALID_IMAGECATALOG_JSON), "an imagecatalog request with url invalid json"
-        );
-        checkNameNotAssertEquals(VALID_IMAGECATALOG_NAME + "-url-invalid-json", "url invalid json");
-    }
-
-    @Test(expectedExceptions = BadRequestException.class)
-    public void testCreateInvalidImageCatalogUrlNoProtocol() throws Exception {
-        given(CloudbreakClient.created());
-        given(ImageCatalog.request()
-                .withName(VALID_IMAGECATALOG_NAME + "-url-np")
-                .withUrl(INVALID_IMAGECATALOG_URL), "an imagecatalog request with url no protocol"
-        );
-        checkNameNotAssertEquals(VALID_IMAGECATALOG_NAME + "-url-np", "with url no protocol");
-    }
-
-    @Test(expectedExceptions = BadRequestException.class)
-    public void testCreateDeleteValidCreateAgain() throws Exception {
-        given(CloudbreakClient.created());
-        given(ImageCatalog.isCreatedDeleted()
-                .withName(VALID_IMAGECATALOG_NAME + "-delete-create")
-                .withUrl(VALID_IMAGECATALOG_URL), "an imagecatalog request then delete"
-        );
-        given(ImageCatalog.request()
-                .withName(VALID_IMAGECATALOG_NAME + "-delete-create")
-                .withUrl(INVALID_IMAGECATALOG_URL), "same imagecatalog request again"
-        );
-        when(ImageCatalog.post(), "post the imagecatalog request");
-        then(ImageCatalog.assertThis(
-                (imageCatalog, t) -> Assert.assertEquals(imageCatalog.getResponse().getName(), VALID_IMAGECATALOG_NAME + "-delete-create")),
-                "check imagecatalog is created when name was used and deleted before");
-    }
-
-    // TODO: if this test and the test of cluster creation are run parallel, wrong image id is found by image finder.
-    // Find a UUID from this catalog and run with the original catalog (cloudbreak-default)
-    @Test(expectedExceptions = BadRequestException.class, enabled = false)
-    public void testDeleteCbDefaultImageCatalog() throws Exception {
-        given(CloudbreakClient.created());
-        given(ImageCatalog.request()
-                .withName(DEFAULT_IMAGECATALOG_NAME)
-        );
-        when(ImageCatalog.delete(), "try to delete cb default image catalog");
-    }
 
     // TODO: if this test and the test of cluster creation are run parallel, wrong image id is found by image finder.
     // Find a UUID from this catalog and run with the original catalog (cloudbreak-default)
@@ -235,17 +134,6 @@ public class ImageCatalogTests extends CloudbreakTest {
                         Assert.assertFalse(imageCatalog.getResponseByProvider().getHdpImages().isEmpty());
                     }), "check base/hdf/hdp images are listed");
         }
-    }
-
-    @Test
-    public void testRequestFromDefaultCatalog() throws Exception {
-        given(CloudbreakClient.created());
-        given(ImageCatalog.request()
-                .withName(DEFAULT_IMAGECATALOG_NAME));
-        when(ImageCatalog.getRequestFromName(), " get request of default image catalog");
-        then(ImageCatalog.assertThis(
-                (imageCatalog, t) -> Assert.assertEquals(imageCatalog.getRequest().getName(), DEFAULT_IMAGECATALOG_NAME)),
-                "check image catalog name in request");
     }
 
     @Test(expectedExceptions = ForbiddenException.class)
