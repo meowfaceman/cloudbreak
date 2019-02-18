@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -27,19 +28,28 @@ public class ComponentLocatorService {
     private HostGroupService hostGroupService;
 
     public Map<String, List<String>> getComponentLocation(Cluster cluster, Collection<String> componentNames) {
+        return getComponentAttribute(cluster, componentNames, InstanceMetaData::getDiscoveryFQDN);
+    }
+
+    public Map<String, List<String>> getComponentPrivateIp(Cluster cluster, Collection<String> componentNames) {
+        return getComponentAttribute(cluster, componentNames, InstanceMetaData::getPrivateIp);
+    }
+
+    private Map<String, List<String>> getComponentAttribute(Cluster cluster, Collection<String> componentNames,
+            Function<InstanceMetaData, String> getterFunction) {
         Map<String, List<String>> result = new HashMap<>();
         for (HostGroup hg : hostGroupService.getByCluster(cluster.getId())) {
             Set<String> hgComponents = blueprintProcessorFactory.get(cluster.getBlueprint().getBlueprintText()).getComponentsInHostGroup(hg.getName());
             hgComponents.retainAll(componentNames);
 
-            List<String> fqdn = hg.getConstraint().getInstanceGroup().getNotDeletedInstanceMetaDataSet().stream()
-                    .map(InstanceMetaData::getDiscoveryFQDN).collect(Collectors.toList());
+            List<String> attributeList = hg.getConstraint().getInstanceGroup().getNotDeletedInstanceMetaDataSet().stream()
+                    .map(getterFunction).collect(Collectors.toList());
             for (String service : hgComponents) {
-                List<String> storedAddresses = result.get(service);
-                if (storedAddresses == null) {
-                    result.put(service, fqdn);
+                List<String> storedAttributes = result.get(service);
+                if (storedAttributes == null) {
+                    result.put(service, attributeList);
                 } else {
-                    storedAddresses.addAll(fqdn);
+                    storedAttributes.addAll(attributeList);
                 }
             }
         }
