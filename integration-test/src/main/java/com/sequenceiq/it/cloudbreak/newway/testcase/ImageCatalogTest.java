@@ -10,7 +10,9 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.sequenceiq.cloudbreak.api.endpoint.v4.common.mappable.CloudPlatform;
 import com.sequenceiq.cloudbreak.api.endpoint.v4.imagecatalog.responses.ImageCatalogV4Response;
+import com.sequenceiq.cloudbreak.api.endpoint.v4.imagecatalog.responses.ImagesV4Response;
 import com.sequenceiq.it.cloudbreak.newway.action.imagecatalog.ImageCatalogDeleteAction;
 import com.sequenceiq.it.cloudbreak.newway.action.imagecatalog.ImageCatalogPostAction;
 import com.sequenceiq.it.cloudbreak.newway.context.MockedTestContext;
@@ -110,7 +112,7 @@ public class ImageCatalogTest extends AbstractIntegrationTest {
         String imgCatalogName = getNameGenerator().getRandomNameForMock();
 
         testContext
-                .given(ImageCatalogEntity.class).withName(imgCatalogName).withUrl("https://google.com/imagecatalog")
+                .given(ImageCatalogEntity.class).withName(imgCatalogName).withUrl(IMG_CATALOG_URL + "/notanimagecatalog")
                 .when(new ImageCatalogPostAction(), RunningParameter.key("ImageCatalogPostAction"))
                 .expect(BadRequestException.class, RunningParameter.key("ImageCatalogPostAction")
                         .withExpectedMessage(".*A valid image catalog must be available on the given URL.*"))
@@ -155,9 +157,10 @@ public class ImageCatalogTest extends AbstractIntegrationTest {
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testImageCatalogDeletion(TestContext testContext) {
         String imgCatalogName = getNameGenerator().getRandomNameForMock();
+        MockedTestContext mockedTestContext = (MockedTestContext) testContext;
 
         testContext
-                .given(ImageCatalogEntity.class).withName(imgCatalogName).withUrl(IMG_CATALOG_URL)
+                .given(ImageCatalogEntity.class).withName(imgCatalogName).withUrl(mockedTestContext.getImageCatalogMockServerSetup().getImageCatalogUrl())
                 .when(new ImageCatalogPostAction())
                 .when(new ImageCatalogDeleteAction())
                 .then((testContext1, entity, cloudbreakClient) -> {
@@ -190,5 +193,98 @@ public class ImageCatalogTest extends AbstractIntegrationTest {
                 })
                 .validate();
     }
+
+    @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
+    public void testGetImageCatalogWhenCatalogContainsTheRequestedProvider(TestContext testContext) {
+        String imgCatalogName = getNameGenerator().getRandomNameForMock();
+        MockedTestContext mockedTestContext = (MockedTestContext) testContext;
+
+        testContext
+                .given(ImageCatalogEntity.class).withName(imgCatalogName).withUrl(mockedTestContext.getImageCatalogMockServerSetup().getImageCatalogUrl())
+                .when(new ImageCatalogPostAction())
+                .then((testContext1, entity, cloudbreakClient) -> {
+                    ImagesV4Response catalog = cloudbreakClient
+                            .getCloudbreakClient()
+                            .imageCatalogV4Endpoint()
+                            .getImagesByName(cloudbreakClient.getWorkspaceId(), imgCatalogName, null, CloudPlatform.MOCK.name());
+                    entity.setResponseByProvider(catalog);
+                    if (catalog.getBaseImages().isEmpty() && catalog.getHdpImages().isEmpty() && catalog.getHdfImages().isEmpty()) {
+                        throw new IllegalArgumentException("The Images response should contain results for MOCK provider.");
+                    }
+                    return entity;
+                })
+                .validate();
+    }
+
+    @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
+    public void testGetImageCatalogWhenCatalogDoesNotContainTheRequestedProvider(TestContext testContext) {
+        String imgCatalogName = getNameGenerator().getRandomNameForMock();
+        MockedTestContext mockedTestContext = (MockedTestContext) testContext;
+
+        testContext
+                .given(ImageCatalogEntity.class).withName(imgCatalogName).withUrl(mockedTestContext.getImageCatalogMockServerSetup().getImageCatalogUrl())
+                .when(new ImageCatalogPostAction())
+                .then((testContext1, entity, cloudbreakClient) -> {
+                    ImagesV4Response catalog = cloudbreakClient
+                            .getCloudbreakClient()
+                            .imageCatalogV4Endpoint()
+                            .getImagesByName(cloudbreakClient.getWorkspaceId(), imgCatalogName, null, CloudPlatform.AWS.name());
+                    entity.setResponseByProvider(catalog);
+                    if (!(catalog.getBaseImages().isEmpty() && catalog.getHdpImages().isEmpty() && catalog.getHdfImages().isEmpty())) {
+                        throw new IllegalArgumentException("The Images response should NOT contain results for AWS provider.");
+                    }
+                    return entity;
+                })
+                .validate();
+    }
+
+    @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
+    public void testGetImageCatalogWhenDefaultCatalogContainsTheRequestedProvider(TestContext testContext) {
+        String imgCatalogName = getNameGenerator().getRandomNameForMock();
+        MockedTestContext mockedTestContext = (MockedTestContext) testContext;
+
+        testContext
+                .given(ImageCatalogEntity.class).withName(imgCatalogName).withUrl(mockedTestContext.getImageCatalogMockServerSetup().getImageCatalogUrl())
+                .when(new ImageCatalogPostAction())
+                .then((testContext1, entity, cloudbreakClient) -> {
+                    ImagesV4Response catalog = cloudbreakClient
+                            .getCloudbreakClient()
+                            .imageCatalogV4Endpoint()
+                            .getImages(cloudbreakClient.getWorkspaceId(), null, CloudPlatform.AWS.name());
+                    entity.setResponseByProvider(catalog);
+                    if (catalog.getBaseImages().isEmpty() && catalog.getHdpImages().isEmpty() && catalog.getHdfImages().isEmpty()) {
+                        throw new IllegalArgumentException("The Images response should contain results for AWS provider.");
+                    }
+                    return entity;
+                })
+                .validate();
+    }
+
+    @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
+    public void testGetImageCatalogWhenDefaultCatalogDoesNotContainTheRequestedProvider(TestContext testContext) {
+        String imgCatalogName = getNameGenerator().getRandomNameForMock();
+        MockedTestContext mockedTestContext = (MockedTestContext) testContext;
+
+        testContext
+                .given(ImageCatalogEntity.class).withName(imgCatalogName).withUrl(mockedTestContext.getImageCatalogMockServerSetup().getImageCatalogUrl())
+                .when(new ImageCatalogPostAction())
+                .then((testContext1, entity, cloudbreakClient) -> {
+                    ImagesV4Response catalog = cloudbreakClient
+                            .getCloudbreakClient()
+                            .imageCatalogV4Endpoint()
+                            .getImages(cloudbreakClient.getWorkspaceId(), null, CloudPlatform.MOCK.name());
+                    entity.setResponseByProvider(catalog);
+                    if (!(catalog.getBaseImages().isEmpty() && catalog.getHdpImages().isEmpty() && catalog.getHdfImages().isEmpty())) {
+                        throw new IllegalArgumentException("The Images response should NOT contain results for MOCK provider.");
+                    }
+                    return entity;
+                })
+                .validate();
+    }
+    //TODO test get images from catalog for existing Stack
+    //TODO test get images from default catalog for existing Stack
+
     //TODO ImageCatalogMockServerSetup to be configurable com.sequenceiq.it.cloudbreak.newway.mock.ImageCatalogMockServerSetup.getImageCatalogUrl
+
+
 }

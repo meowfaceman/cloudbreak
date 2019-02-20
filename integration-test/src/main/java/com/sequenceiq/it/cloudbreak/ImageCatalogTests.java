@@ -104,38 +104,6 @@ public class ImageCatalogTests extends CloudbreakTest {
         );
     }
 
-    @Test
-    public void testGetImageCatalogByProvider() throws Exception {
-        given(CloudbreakClient.created());
-        for (String provider : PROVIDERS) {
-            getItContext().putContextParam(CLOUDPROVIDER, provider);
-            when(ImageCatalog.getImagesByProvider(), "get the imagecatalog by provider " + provider);
-            then(ImageCatalog.assertThis(
-                    (imageCatalog, t) -> {
-                        Assert.assertFalse(imageCatalog.getResponseByProvider().getBaseImages().isEmpty());
-                        Assert.assertFalse(imageCatalog.getResponseByProvider().getHdfImages().isEmpty());
-                        Assert.assertFalse(imageCatalog.getResponseByProvider().getHdpImages().isEmpty());
-                    }), "check base/hdf/hdp images are listed");
-        }
-    }
-
-    @Test
-    public void testGetByProviderFromImageCatalog() throws Exception {
-        given(CloudbreakClient.created());
-        for (String provider : PROVIDERS) {
-            getItContext().putContextParam(CLOUDPROVIDER, provider);
-            given(ImageCatalog.request()
-                    .withName(DEFAULT_IMAGECATALOG_NAME));
-            when(ImageCatalog.getImagesByProviderFromImageCatalog(), " get by provider " + provider + " from image catalog");
-            then(ImageCatalog.assertThis(
-                    (imageCatalog, t) -> {
-                        Assert.assertFalse(imageCatalog.getResponseByProvider().getBaseImages().isEmpty());
-                        Assert.assertFalse(imageCatalog.getResponseByProvider().getHdfImages().isEmpty());
-                        Assert.assertFalse(imageCatalog.getResponseByProvider().getHdpImages().isEmpty());
-                    }), "check base/hdf/hdp images are listed");
-        }
-    }
-
     @Test(expectedExceptions = ForbiddenException.class)
     public void testGetImageCatalogByInvalidProvider() throws Exception {
         given(CloudbreakClient.created());
