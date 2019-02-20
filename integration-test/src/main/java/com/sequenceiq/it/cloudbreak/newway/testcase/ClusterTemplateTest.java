@@ -1,9 +1,8 @@
 package com.sequenceiq.it.cloudbreak.newway.testcase;
 
 import static com.sequenceiq.cloudbreak.api.endpoint.v4.clustertemplate.ClusterTemplateV4Type.SPARK;
-import static com.sequenceiq.it.cloudbreak.newway.EnvironmentEntity.EUROPE;
-import static com.sequenceiq.it.cloudbreak.newway.EnvironmentEntity.LONDON;
-import static com.sequenceiq.it.cloudbreak.newway.EnvironmentEntity.VALID_REGION;
+import static com.sequenceiq.it.cloudbreak.newway.cloud.v2.MockCloudProvider.LONDON;
+import static com.sequenceiq.it.cloudbreak.newway.cloud.v2.MockCloudProvider.VALID_REGION;
 import static com.sequenceiq.it.cloudbreak.newway.context.RunningParameter.force;
 import static com.sequenceiq.it.cloudbreak.newway.context.RunningParameter.key;
 
@@ -32,6 +31,7 @@ import com.sequenceiq.it.cloudbreak.newway.assertion.CheckStackTemplateAfterClus
 import com.sequenceiq.it.cloudbreak.newway.assertion.CheckStackTemplateAfterClusterTemplateCreationWithProperties;
 import com.sequenceiq.it.cloudbreak.newway.client.LdapConfigTestClient;
 import com.sequenceiq.it.cloudbreak.newway.context.MockedTestContext;
+import com.sequenceiq.it.cloudbreak.newway.cloud.v2.MockCloudProvider;
 import com.sequenceiq.it.cloudbreak.newway.context.TestContext;
 import com.sequenceiq.it.cloudbreak.newway.entity.ClusterTemplateEntity;
 import com.sequenceiq.it.cloudbreak.newway.entity.ManagementPackEntity;
@@ -184,7 +184,7 @@ public class ClusterTemplateTest extends AbstractIntegrationTest {
     public void testCreateAgainClusterTemplate(TestContext testContext) {
         testContext.given("environment", EnvironmentEntity.class).withRegions(VALID_REGION).withLocation(LONDON)
                 .when(Environment::post)
-                .given("placementSettings", PlacementSettingsEntity.class).withRegion(EUROPE)
+                .given("placementSettings", PlacementSettingsEntity.class).withRegion(MockCloudProvider.EUROPE)
                 .given("stackTemplate", StackTemplateEntity.class).withEnvironment("environment").withPlacement("placementSettings")
                 .given(ClusterTemplateEntity.class).withStackTemplate("stackTemplate")
                 .when(new ClusterTemplateV4CreateAction())

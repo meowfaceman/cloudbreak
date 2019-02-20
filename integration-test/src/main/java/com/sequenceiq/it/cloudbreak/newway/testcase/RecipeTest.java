@@ -65,7 +65,7 @@ public class RecipeTest extends AbstractIntegrationTest {
     @Test(dataProvider = "dataProviderForNonPreTerminationRecipeTypes")
     public void testRecipeNotPreTerminationHasGotHighStateOnCluster(TestContext testContext, RecipeV4Type type, int executionTime) {
         LOGGER.info("testing recipe execution for type: {}", type.name());
-        String recipeName = creator.getRandomNameForMock();
+        String recipeName = creator.getRandomNameForResource();
         testContext
                 .given(RecipeEntity.class).withName(recipeName).withContent(RECIPE_CONTENT).withRecipeType(type)
                 .when(Recipe.postV4())
@@ -79,7 +79,7 @@ public class RecipeTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testRecipePreTerminationRecipeHasGotHighStateOnCluster(TestContext testContext) {
-        String recipeName = creator.getRandomNameForMock();
+        String recipeName = creator.getRandomNameForResource();
         testContext
                 .given(RecipeEntity.class).withName(recipeName).withContent(RECIPE_CONTENT).withRecipeType(PRE_TERMINATION)
                 .when(Recipe.postV4())
@@ -97,7 +97,7 @@ public class RecipeTest extends AbstractIntegrationTest {
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK, description = "Post Ambari start recipes executed when LDAP config is present, because later the LDAP sync is "
             + "hooked for this salt state in the top.sls")
     public void testWhenThereIsNoRecipeButLdapHasAttachedThenThePostAmbariRecipeShouldRunWhichResultThreeHighStateCall(TestContext testContext) {
-        String ldapName = creator.getRandomNameForMock();
+        String ldapName = creator.getRandomNameForResource();
         testContext
                 .given(LdapConfigTestDto.class).withName(ldapName)
                 .when(ldapConfigTestClient.post())
@@ -110,7 +110,7 @@ public class RecipeTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testWhenClusterGetUpScaledThenPostClusterInstallRecipeShouldBeExecuted(TestContext testContext) {
-        String recipeName = creator.getRandomNameForMock();
+        String recipeName = creator.getRandomNameForResource();
         testContext
                 .given(RecipeEntity.class).withName(recipeName).withContent(RECIPE_CONTENT).withRecipeType(POST_CLUSTER_INSTALL)
                 .when(Recipe.postV4())
@@ -127,7 +127,7 @@ public class RecipeTest extends AbstractIntegrationTest {
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testWhenRecipeProvidedToHostGroupAndAnotherHostGroupGetUpScaledThenThereIsNoFurtherRecipeExecutionOnTheNewNodeBesideTheDefaultOnes(
             TestContext testContext) {
-        String recipeName = creator.getRandomNameForMock();
+        String recipeName = creator.getRandomNameForResource();
         testContext
                 .given(RecipeEntity.class).withName(recipeName).withContent(RECIPE_CONTENT).withRecipeType(POST_AMBARI_START)
                 .when(Recipe.postV4())

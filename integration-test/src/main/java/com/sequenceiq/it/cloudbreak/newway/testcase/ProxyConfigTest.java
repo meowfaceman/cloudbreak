@@ -61,7 +61,7 @@ public class ProxyConfigTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateValidProxy(TestContext testContext) {
-        String name = randomNameCreator.getRandomNameForMock();
+        String name = randomNameCreator.getRandomNameForResource();
         testContext
                 .given(ProxyConfigEntity.class)
                 .withName(name)
@@ -82,7 +82,7 @@ public class ProxyConfigTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateValidHttpsProxy(TestContext testContext) {
-        String name = randomNameCreator.getRandomNameForMock();
+        String name = randomNameCreator.getRandomNameForResource();
         testContext
                 .given(ProxyConfigEntity.class)
                 .withName(name)
@@ -177,7 +177,7 @@ public class ProxyConfigTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateProxyLongDesc(TestContext testContext) {
-        String name = randomNameCreator.getRandomNameForMock();
+        String name = randomNameCreator.getRandomNameForResource();
         String longDescription = longStringGeneratorUtil.stringGenerator(1001);
         testContext
                 .given(ProxyConfigEntity.class)
@@ -197,7 +197,7 @@ public class ProxyConfigTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateProxyWithoutHost(TestContext testContext) {
-        String name = randomNameCreator.getRandomNameForMock();
+        String name = randomNameCreator.getRandomNameForResource();
         String key = "nohost";
         testContext
                 .given(ProxyConfigEntity.class)
@@ -217,7 +217,7 @@ public class ProxyConfigTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateProxyWithoutPort(TestContext testContext) {
-        String name = randomNameCreator.getRandomNameForMock();
+        String name = randomNameCreator.getRandomNameForResource();
         String key = "noport";
         testContext
                 .given(ProxyConfigEntity.class)
@@ -237,7 +237,7 @@ public class ProxyConfigTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateDeleteCreateAgain(TestContext testContext) {
-        String name = randomNameCreator.getRandomNameForMock();
+        String name = randomNameCreator.getRandomNameForResource();
         testContext
                 .given(name, ProxyConfigEntity.class)
                 .withName(name)
@@ -261,7 +261,7 @@ public class ProxyConfigTest extends AbstractIntegrationTest {
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateProxyWithSameName(TestContext testContext) {
 
-        String name = randomNameCreator.getRandomNameForMock();
+        String name = randomNameCreator.getRandomNameForResource();
         testContext
                 .given(name, ProxyConfigEntity.class)
                 .withName(name)

@@ -20,7 +20,7 @@ public class ManagementPackEntity extends AbstractCloudbreakEntity<ManagementPac
     }
 
     public ManagementPackEntity valid() {
-        return withName(getNameCreator().getRandomNameForMock())
+        return withName(getNameCreator().getRandomNameForResource())
                 .witMpackUrl("http://public-repo-1.hortonworks.com/HDF/centos7/3.x/updates/3.2.0.0/tars/hdf_ambari_mp/hdf-ambari-mpack-3.2.0.0-520.tar.gz");
     }
 

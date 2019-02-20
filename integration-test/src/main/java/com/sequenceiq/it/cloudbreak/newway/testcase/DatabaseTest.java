@@ -63,7 +63,7 @@ public class DatabaseTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateDeleteCreate(TestContext testContext) {
-        String databaseName = getNameGenerator().getRandomNameForMock();
+        String databaseName = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(DatabaseEntity.class)
                     .withName(databaseName)
@@ -81,7 +81,7 @@ public class DatabaseTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateTwice(TestContext testContext) {
-        String databaseName = getNameGenerator().getRandomNameForMock();
+        String databaseName = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(DatabaseEntity.class)
                     .withName(databaseName)
@@ -95,7 +95,7 @@ public class DatabaseTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = DB_TYPE_PROVIDER)
     public void testCreateDatabaseWithTypeAndTestConnection(TestContext testContext, DatabaseType type) {
-        String databaseName = getNameGenerator().getRandomNameForMock();
+        String databaseName = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(DatabaseEntity.class)
                     .withType(type.name())
@@ -175,11 +175,11 @@ public class DatabaseTest extends AbstractIntegrationTest {
                 {applicationContext.getBean(TEST_CONTEXT_CLASS), "a-@#$%|:&*;", DATABASE_USERNAME, DATABASE_PASSWORD,
                         DATABASE_PROTOCOL + DATABASE_HOST_PORT_DB, "The database's name can only contain lowercase alphanumeric characters and "
                         + "hyphens and has start with an alphanumeric character"},
-                {applicationContext.getBean(TEST_CONTEXT_CLASS), getNameGenerator().getRandomNameForMock(), null, DATABASE_PASSWORD,
+                {applicationContext.getBean(TEST_CONTEXT_CLASS), getNameGenerator().getRandomNameForResource(), null, DATABASE_PASSWORD,
                         DATABASE_PROTOCOL + DATABASE_HOST_PORT_DB, "connectionUserName: null, error: must not be null"},
-                {applicationContext.getBean(TEST_CONTEXT_CLASS), getNameGenerator().getRandomNameForMock(), DATABASE_USERNAME, null,
+                {applicationContext.getBean(TEST_CONTEXT_CLASS), getNameGenerator().getRandomNameForResource(), DATABASE_USERNAME, null,
                         DATABASE_PROTOCOL + DATABASE_HOST_PORT_DB, "connectionPassword: null, error: must not be null"},
-                {applicationContext.getBean(TEST_CONTEXT_CLASS), getNameGenerator().getRandomNameForMock(), DATABASE_USERNAME, DATABASE_PASSWORD,
+                {applicationContext.getBean(TEST_CONTEXT_CLASS), getNameGenerator().getRandomNameForResource(), DATABASE_USERNAME, DATABASE_PASSWORD,
                         DATABASE_HOST_PORT_DB, "Unsupported database type"}
         };
     }

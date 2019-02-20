@@ -15,7 +15,10 @@ public class VolumeV4Entity extends AbstractCloudbreakEntity<VolumeV4Request, Vo
 
     @Override
     public CloudbreakEntity valid() {
-        return withSize(50);
+//        int attachedVolumeSize = Integer.parseInt(getTestParameter().getWithDefault("awsInstanceVolumeSize", "100"));
+//        int attachedVolumeCount = Integer.parseInt(getTestParameter().getWithDefault("awsInstanceVolumeCount", "1"));
+//        String attachedVolumeType = getTestParameter().getWithDefault("awsInstanceVolumeType", "gp2");
+        return getCloudProvider().attachedVolume(this);
     }
 
     public VolumeV4Entity withSize(int size) {

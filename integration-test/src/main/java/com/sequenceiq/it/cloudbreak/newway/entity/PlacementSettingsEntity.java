@@ -21,8 +21,7 @@ public class PlacementSettingsEntity extends AbstractCloudbreakEntity<PlacementS
 
     @Override
     public PlacementSettingsEntity valid() {
-        return withRegion(getCloudProvider().region())
-                .withAvailabilityZone(getCloudProvider().availabilityZone());
+        return getCloudProvider().placement(this);
     }
 
     public PlacementSettingsEntity withRegion(String region) {

@@ -56,7 +56,7 @@ public class DatabaseEntity extends AbstractCloudbreakEntity<DatabaseV4Request, 
     }
 
     public DatabaseEntity valid() {
-        return withName(getNameCreator().getRandomNameForMock())
+        return withName(getNameCreator().getRandomNameForResource())
                 .withConnectionUserName("user")
                 .withConnectionPassword("password")
                 .withConnectionURL("jdbc:postgresql://somedb.com:5432/mydb")

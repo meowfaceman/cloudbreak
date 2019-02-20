@@ -22,7 +22,7 @@ public class AmbariEntity extends AbstractCloudbreakEntity<AmbariV4Request, Resp
 
     public AmbariEntity valid() {
         return withUserName("admin")
-                .withPassword("admin1234")
+                .withPassword("Admin123")
                 .withBlueprintName(MockCloudProvider.BLUEPRINT_DEFAULT_NAME)
                 .withValidateRepositories(true);
     }

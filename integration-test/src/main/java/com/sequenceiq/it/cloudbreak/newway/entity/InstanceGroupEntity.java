@@ -48,7 +48,7 @@ public class InstanceGroupEntity extends AbstractCloudbreakEntity<InstanceGroupV
                 .withSecurityGroup(getTestContext().init(SecurityGroupEntity.class))
                 .withType(hostGroupType.getInstanceGroupType())
                 .withName(hostGroupType.getName().toLowerCase())
-                .withTemplate(getCloudProvider().template(getTestContext()));
+                .withTemplate(getTestContext().given(InstanceTemplateV4Entity.class));
     }
 
     public static InstanceGroupEntity hostGroup(TestContext testContext, HostGroupType hostGroupType) {
@@ -74,7 +74,7 @@ public class InstanceGroupEntity extends AbstractCloudbreakEntity<InstanceGroupV
                 .withSecurityGroup(testContext.init(SecurityGroupEntity.class))
                 .withType(hostGroupType.getInstanceGroupType())
                 .withName(hostGroupType.getName().toLowerCase())
-                .withTemplate(entity.getCloudProvider().template(testContext));
+                .withTemplate(testContext.given(InstanceTemplateV4Entity.class));
     }
 
     public InstanceGroupEntity withNodeCount(int nodeCount) {

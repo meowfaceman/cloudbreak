@@ -48,8 +48,8 @@ public class ImageCatalogEntity extends AbstractCloudbreakEntity<ImageCatalogV4R
 
     public ImageCatalogEntity valid() {
         MockedTestContext mockedTestContext = (MockedTestContext) getTestContext();
-        return withName(getNameCreator().getRandomNameForMock())
-                .withUrl(mockedTestContext.getImageCatalogMockServerSetup().getImageCatalogUrl());
+        return getCloudProvider().imageCatalog(withName(getNameCreator().getRandomNameForResource())
+                .withUrl(mockedTestContext.getImageCatalogMockServerSetup().getImageCatalogUrl()));
     }
 
     public ImagesV4Response getResponseByProvider() {

@@ -34,7 +34,7 @@ public class RecoveryItTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK, enabled = false)
     public void testWhenSyncTellsNodesAreUnhealthyThenClusterStatusHaveToChange(MockedTestContext testContext) {
-        String stackName = getNameGenerator().getRandomNameForMock();
+        String stackName = getNameGenerator().getRandomNameForResource();
         mockAmbari(testContext);
         testContext
                 .given(WORKER_ID, InstanceGroupEntity.class).withHostGroup(WORKER).withNodeCount(1)

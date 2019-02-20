@@ -32,7 +32,7 @@ public class ProxyConfigEntity extends AbstractCloudbreakEntity<ProxyV4Request, 
 
     @Override
     public ProxyConfigEntity valid() {
-        return withName(getNameCreator().getRandomNameForMock())
+        return withName(getNameCreator().getRandomNameForResource())
                 .withDescription("Proxy config for integration test")
                 .withServerHost("1.2.3.4")
                 .withServerUser("mock")

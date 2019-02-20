@@ -32,7 +32,7 @@ public class DatabaseTestEntity extends AbstractCloudbreakEntity<DatabaseTestV4R
 
     public DatabaseTestEntity valid() {
         return withRequest(new DatabaseV4Request())
-                .withName(getNameCreator().getRandomNameForMock())
+                .withName(getNameCreator().getRandomNameForResource())
                 .withConnectionUserName("user")
                 .withConnectionPassword("password")
                 .withConnectionURL("jdbc:postgresql://somedb.com:5432/mydb")

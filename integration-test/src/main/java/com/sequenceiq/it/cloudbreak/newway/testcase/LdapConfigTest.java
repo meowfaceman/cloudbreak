@@ -44,7 +44,7 @@ public class LdapConfigTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateValidLdap(TestContext testContext) {
-        String name = getNameGenerator().getRandomNameForMock();
+        String name = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(LdapConfigTestDto.class)
                 .valid()
@@ -60,7 +60,7 @@ public class LdapConfigTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateValidAd(TestContext testContext) {
-        String name = getNameGenerator().getRandomNameForMock();
+        String name = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(LdapConfigTestDto.class)
                 .valid()
@@ -77,7 +77,7 @@ public class LdapConfigTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateLdapWithMissingName(TestContext testContext) {
-        String key = getNameGenerator().getRandomNameForMock();
+        String key = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(LdapConfigTestDto.class)
                 .valid()
@@ -118,7 +118,7 @@ public class LdapConfigTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateLdapWithLongDesc(TestContext testContext) {
-        String name = getNameGenerator().getRandomNameForMock();
+        String name = getNameGenerator().getRandomNameForResource();
         String longDesc = longStringGenerator.stringGenerator(1001);
         testContext
                 .given(LdapConfigTestDto.class)
@@ -134,7 +134,7 @@ public class LdapConfigTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateDeleteCreateAgain(TestContext testContext) {
-        String name = getNameGenerator().getRandomNameForMock();
+        String name = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(name, LdapConfigTestDto.class)
                 .valid()
@@ -152,7 +152,7 @@ public class LdapConfigTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateLdapWithSameName(TestContext testContext) {
-        String name = getNameGenerator().getRandomNameForMock();
+        String name = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(name, LdapConfigTestDto.class)
                 .valid()

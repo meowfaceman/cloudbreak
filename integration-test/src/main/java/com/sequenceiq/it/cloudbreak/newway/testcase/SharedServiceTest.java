@@ -84,10 +84,10 @@ public class SharedServiceTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateDatalakeCluster(TestContext testContext) {
-        String hiveRdsName = creator.getRandomNameForMock();
-        String rangerRdsName = creator.getRandomNameForMock();
-        String ldapName = creator.getRandomNameForMock();
-        String blueprintName = creator.getRandomNameForMock();
+        String hiveRdsName = creator.getRandomNameForResource();
+        String rangerRdsName = creator.getRandomNameForResource();
+        String ldapName = creator.getRandomNameForResource();
+        String blueprintName = creator.getRandomNameForResource();
         DatabaseV4Request hiveRds = rdsRequest(DatabaseType.HIVE, hiveRdsName);
         DatabaseV4Request rangerRds = rdsRequest(DatabaseType.RANGER, rangerRdsName);
         testContext
@@ -118,10 +118,10 @@ public class SharedServiceTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateDatalakeClusterWithMoreHostgroupThanSpecifiedInBlueprint(TestContext testContext) {
-        String hiveRdsName = creator.getRandomNameForMock();
-        String rangerRdsName = creator.getRandomNameForMock();
-        String ldapName = creator.getRandomNameForMock();
-        String blueprintName = creator.getRandomNameForMock();
+        String hiveRdsName = creator.getRandomNameForResource();
+        String rangerRdsName = creator.getRandomNameForResource();
+        String ldapName = creator.getRandomNameForResource();
+        String blueprintName = creator.getRandomNameForResource();
         CloudStorageV4Request cloudStorage = cloudStorage();
         testContext
                 .given(HIVE, DatabaseEntity.class).valid().withType(DatabaseType.HIVE.name()).withName(hiveRdsName)
@@ -141,9 +141,9 @@ public class SharedServiceTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateDatalakeClusterWithoutLdap(TestContext testContext) {
-        String hiveRdsName = creator.getRandomNameForMock();
-        String rangerRdsName = creator.getRandomNameForMock();
-        String blueprintName = creator.getRandomNameForMock();
+        String hiveRdsName = creator.getRandomNameForResource();
+        String rangerRdsName = creator.getRandomNameForResource();
+        String blueprintName = creator.getRandomNameForResource();
         CloudStorageV4Request cloudStorage = cloudStorage();
         testContext
                 .given(HIVE, DatabaseEntity.class).valid().withType(DatabaseType.HIVE.name()).withName(hiveRdsName)
@@ -163,9 +163,9 @@ public class SharedServiceTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateDatalakeClusterWithOnlyOneRdsWhichIsHive(TestContext testContext) {
-        String hiveRdsName = creator.getRandomNameForMock();
-        String ldapName = creator.getRandomNameForMock();
-        String blueprintName = creator.getRandomNameForMock();
+        String hiveRdsName = creator.getRandomNameForResource();
+        String ldapName = creator.getRandomNameForResource();
+        String blueprintName = creator.getRandomNameForResource();
         CloudStorageV4Request cloudStorage = cloudStorage();
         testContext
                 .given(HIVE, DatabaseEntity.class).valid().withType(DatabaseType.HIVE.name()).withName(hiveRdsName)
@@ -185,9 +185,9 @@ public class SharedServiceTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateDatalakeClusterWithOnlyOneRdsWhichIsRanger(TestContext testContext) {
-        String rangerRdsName = creator.getRandomNameForMock();
-        String ldapName = creator.getRandomNameForMock();
-        String blueprintName = creator.getRandomNameForMock();
+        String rangerRdsName = creator.getRandomNameForResource();
+        String ldapName = creator.getRandomNameForResource();
+        String blueprintName = creator.getRandomNameForResource();
         CloudStorageV4Request cloudStorage = cloudStorage();
         testContext
                 .given(RANGER, DatabaseEntity.class).valid().withType(DatabaseType.RANGER.name()).withName(rangerRdsName)
@@ -207,8 +207,8 @@ public class SharedServiceTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateDatalakeClusterWithoutRds(TestContext testContext) {
-        String ldapName = creator.getRandomNameForMock();
-        String blueprintName = creator.getRandomNameForMock();
+        String ldapName = creator.getRandomNameForResource();
+        String blueprintName = creator.getRandomNameForResource();
         CloudStorageV4Request cloudStorage = cloudStorage();
         testContext
                 .given(BlueprintEntity.class).withName(blueprintName).withTag(of(SHARED_SERVICE_TAG), of(true)).withAmbariBlueprint(VALID_DL_BP)
@@ -226,7 +226,7 @@ public class SharedServiceTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateDatalakeClusterWithoutRdsAndLdap(TestContext testContext) {
-        String blueprintName = creator.getRandomNameForMock();
+        String blueprintName = creator.getRandomNameForResource();
         CloudStorageV4Request cloudStorage = cloudStorage();
         testContext
                 .given(BlueprintEntity.class).withName(blueprintName).withTag(of(SHARED_SERVICE_TAG), of(true)).withAmbariBlueprint(VALID_DL_BP)

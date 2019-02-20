@@ -42,7 +42,7 @@ public class CredentialTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCredentialCreationWithCorrectRequest(MockedTestContext testContext) {
-        String credentialName = getNameGenerator().getRandomNameForMock();
+        String credentialName = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(CredentialTestDto.class)
                 .withName(credentialName)
@@ -54,7 +54,7 @@ public class CredentialTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateDeleteCreate(MockedTestContext testContext) {
-        String credentialName = getNameGenerator().getRandomNameForMock();
+        String credentialName = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(CredentialTestDto.class)
                 .withName(credentialName)
@@ -72,7 +72,7 @@ public class CredentialTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateTwice(MockedTestContext testContext) {
-        String credentialName = getNameGenerator().getRandomNameForMock();
+        String credentialName = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(CredentialTestDto.class)
                 .withName(credentialName)
@@ -87,7 +87,7 @@ public class CredentialTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testModifyCredential(MockedTestContext testContext) {
-        String credentialName = getNameGenerator().getRandomNameForMock();
+        String credentialName = getNameGenerator().getRandomNameForResource();
         String modifiedDescription = "modified";
         testContext
                 .given(CredentialTestDto.class)

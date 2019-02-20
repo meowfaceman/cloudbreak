@@ -15,7 +15,6 @@ public abstract class AbstractCloudProvider implements CloudProvider {
         return testParameter;
     }
 
-    @Override
     public String getSubnetCIDR() {
         String subnetCIDR = testParameter.get("mockSubnetCIDR");
         return subnetCIDR == null ? DEFAULT_SUBNET_CIDR : subnetCIDR;

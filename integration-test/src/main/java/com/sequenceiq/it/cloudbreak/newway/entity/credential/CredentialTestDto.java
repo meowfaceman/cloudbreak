@@ -43,7 +43,7 @@ public class CredentialTestDto extends AbstractCloudbreakEntity<CredentialV4Requ
         MockCredentialV4Parameters credentialParameters = new MockCredentialV4Parameters();
         MockedTestContext mockedTestContext = (MockedTestContext) getTestContext();
         credentialParameters.setMockEndpoint(mockedTestContext.getSparkServer().getEndpoint());
-        return withName(getNameCreator().getRandomNameForMock())
+        return withName(getNameCreator().getRandomNameForResource())
                 .withDescription(CREDENTIAL_DEFAULT_DESCRIPTION)
                 .withMockParameters(credentialParameters)
                 .withCloudPlatform(MOCK_CAPITAL);

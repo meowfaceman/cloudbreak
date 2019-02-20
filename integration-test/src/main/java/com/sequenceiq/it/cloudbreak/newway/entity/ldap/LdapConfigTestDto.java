@@ -39,7 +39,7 @@ public class LdapConfigTestDto extends AbstractCloudbreakEntity<LdapV4Request, L
     }
 
     public LdapConfigTestDto valid() {
-        return withName(getNameCreator().getRandomNameForMock())
+        return withName(getNameCreator().getRandomNameForResource())
                 .withBindPassword("bindPassword")
                 .withAdminGroup("group")
                 .withBindDn("bindDn")

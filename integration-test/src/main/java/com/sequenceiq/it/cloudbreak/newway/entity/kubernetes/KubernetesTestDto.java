@@ -54,7 +54,7 @@ public class KubernetesTestDto extends AbstractCloudbreakEntity<KubernetesV4Requ
     }
 
     public KubernetesTestDto valid() {
-        return withName(getNameCreator().getRandomNameForMock())
+        return withName(getNameCreator().getRandomNameForResource())
                 .withContent("content")
                 .withDesription("great kubernetes config");
     }

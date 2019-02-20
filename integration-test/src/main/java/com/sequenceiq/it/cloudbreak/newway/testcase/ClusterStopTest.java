@@ -38,7 +38,7 @@ public class ClusterStopTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testClusterStop(MockedTestContext testContext) {
-        String clusterName = getNameGenerator().getRandomNameForMock();
+        String clusterName = getNameGenerator().getRandomNameForResource();
         mockAmbari(testContext, clusterName);
         mockSpi(testContext);
         testContext

@@ -42,7 +42,7 @@ public class BlueprintEntity extends AbstractCloudbreakEntity<BlueprintV4Request
     }
 
     public BlueprintEntity valid() {
-        return withName(getNameCreator().getRandomNameForMock())
+        return withName(getNameCreator().getRandomNameForResource())
                 .withAmbariBlueprint("someBlueprint");
     }
 

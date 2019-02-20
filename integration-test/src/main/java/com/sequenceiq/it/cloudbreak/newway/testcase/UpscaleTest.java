@@ -56,11 +56,11 @@ public class UpscaleTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testUpscale(MockedTestContext testContext) {
-        String clusterName = getNameGenerator().getRandomNameForMock();
+        String clusterName = getNameGenerator().getRandomNameForResource();
         int originalWorkedCount = 1;
         int desiredWorkedCount = 15;
         int addedNodes = desiredWorkedCount - originalWorkedCount;
-        testContext.given(StackEntity.class).withName(clusterName).withGatewayPort(testContext.getSparkServer().getPort())
+        testContext.given(StackEntity.class).withName(clusterName)
                 .when(Stack.postV4())
                 .await(STACK_AVAILABLE)
                 .when(StackScalePostAction.valid().withDesiredCount(desiredWorkedCount))

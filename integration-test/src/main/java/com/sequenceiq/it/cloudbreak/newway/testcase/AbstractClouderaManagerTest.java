@@ -16,7 +16,7 @@ public class AbstractClouderaManagerTest extends AbstractIntegrationTest {
         MockedTestContext testContext = (MockedTestContext) data[0];
         minimalSetupForClusterCreation(testContext);
         testContext.given(BlueprintEntity.class)
-                .withName(getNameGenerator().getRandomNameForMock())
+                .withName(getNameGenerator().getRandomNameForResource())
                 .withAmbariBlueprint(ResourceUtil.readResourceAsString(applicationContext, "classpath:/blueprint/clouderamanager.bp"))
                 .when(Blueprint.postV4());
     }

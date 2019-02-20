@@ -60,8 +60,8 @@ public class LdapClusterTest extends AbstractIntegrationTest {
         testContext.getModel().getAmbariMock().postSyncLdap();
         testContext.getModel().getAmbariMock().putConfigureLdap();
 
-        String stackName = getNameGenerator().getRandomNameForMock();
-        String ldapName = getNameGenerator().getRandomNameForMock();
+        String stackName = getNameGenerator().getRandomNameForResource();
+        String ldapName = getNameGenerator().getRandomNameForResource();
 
         testContext.given(LdapConfigTestDto.class).withName(ldapName)
                 .when(ldapConfigTestClient.post())

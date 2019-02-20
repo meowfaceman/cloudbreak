@@ -43,7 +43,7 @@ public class EnvironmentSettingsV4Entity extends AbstractCloudbreakEntity<Enviro
         if (credentialTestDto == null) {
             throw new IllegalArgumentException("Credential is mandatory for EnvironmentSettings");
         }
-        return withName(getNameCreator().getRandomNameForMock())
+        return withName(getNameCreator().getRandomNameForResource())
                 .withCredentialName(credentialTestDto.getName());
     }
 

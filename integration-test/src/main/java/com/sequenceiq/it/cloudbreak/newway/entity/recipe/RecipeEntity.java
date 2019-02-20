@@ -47,7 +47,7 @@ public class RecipeEntity extends AbstractCloudbreakEntity<RecipeV4Request, Reci
     }
 
     public RecipeEntity valid() {
-        return withName(getNameCreator().getRandomNameForMock())
+        return withName(getNameCreator().getRandomNameForResource())
                 .withRecipeType(RecipeV4Type.PRE_AMBARI_START)
                 .withContent(new String(Base64.getEncoder().encode("#!/bin/bash%necho ALMAA".getBytes())));
     }

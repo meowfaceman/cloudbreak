@@ -8,8 +8,14 @@ import com.sequenceiq.it.cloudbreak.newway.context.TestContext;
 
 @Prototype
 public class RootVolumeV4Entity extends AbstractCloudbreakEntity<RootVolumeV4Request, RootVolumeV4Response, RootVolumeV4Entity> {
+
     protected RootVolumeV4Entity(TestContext testContext) {
         super(new RootVolumeV4Request(), testContext);
+    }
+
+    @Override
+    public RootVolumeV4Entity valid() {
+        return withSize(50);
     }
 
     public RootVolumeV4Entity withSize(int size) {

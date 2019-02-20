@@ -35,8 +35,8 @@ public class StackCreationTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateNewRegularClusterWithDatabase(TestContext testContext) {
-        String databaseName = getNameGenerator().getRandomNameForMock();
-        String clusterName = getNameGenerator().getRandomNameForMock();
+        String databaseName = getNameGenerator().getRandomNameForResource();
+        String clusterName = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(DatabaseEntity.class).valid().withName(databaseName)
                 .when(DatabaseEntity.post())

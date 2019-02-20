@@ -52,7 +52,7 @@ public class BlueprintTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT)
     public void testCreateBlueprint(TestContext testContext) {
-        String blueprintName = getNameGenerator().getRandomNameForMock();
+        String blueprintName = getNameGenerator().getRandomNameForResource();
         List<String> keys = Arrays.asList("key_1", "key_2", "key_3");
         List<Object> values = Arrays.asList("value_1", "value_2", "value_3");
         testContext.given(BlueprintEntity.class)
@@ -73,7 +73,7 @@ public class BlueprintTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT)
     public void testCreateBlueprintWithInvalidCharacterName(TestContext testContext) {
-        String blueprintName = getNameGenerator().getInvalidRandomNameForMock();
+        String blueprintName = getNameGenerator().getInvalidRandomNameForResource();
         testContext.given(BlueprintEntity.class)
                 .withName(blueprintName)
                 .withAmbariBlueprint(VALID_BP)
@@ -86,7 +86,7 @@ public class BlueprintTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT)
     public void testCreateBlueprintWithInvalidJson(TestContext testContext) {
-        String blueprintName = getNameGenerator().getRandomNameForMock();
+        String blueprintName = getNameGenerator().getRandomNameForResource();
         testContext.given(BlueprintEntity.class)
                 .withName(blueprintName)
                 .withAmbariBlueprint("apple-tree")
@@ -107,7 +107,7 @@ public class BlueprintTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testGetSpecificBlueprint(TestContext testContext) {
-        String blueprintName = getNameGenerator().getRandomNameForMock();
+        String blueprintName = getNameGenerator().getRandomNameForResource();
         testContext.given(BlueprintEntity.class)
                 .withName(blueprintName)
                 .withAmbariBlueprint(VALID_BP)
@@ -122,7 +122,7 @@ public class BlueprintTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT)
     public void testDeleteSpecificBlueprint(TestContext testContext) {
-        String blueprintName = getNameGenerator().getRandomNameForMock();
+        String blueprintName = getNameGenerator().getRandomNameForResource();
         testContext.given(BlueprintEntity.class)
                 .withName(blueprintName)
                 .withAmbariBlueprint(VALID_BP)
@@ -147,7 +147,7 @@ public class BlueprintTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT)
     public void testRequestSpecificBlueprintRequest(TestContext testContext) {
-        String blueprintName = getNameGenerator().getRandomNameForMock();
+        String blueprintName = getNameGenerator().getRandomNameForResource();
         testContext.given(BlueprintEntity.class)
                 .withName(blueprintName)
                 .withAmbariBlueprint(VALID_BP)

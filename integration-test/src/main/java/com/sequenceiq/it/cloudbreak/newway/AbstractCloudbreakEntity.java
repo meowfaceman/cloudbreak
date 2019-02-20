@@ -12,11 +12,12 @@ import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.sequenceiq.cloudbreak.api.endpoint.v4.common.Status;
 import com.sequenceiq.it.cloudbreak.newway.action.Action;
 import com.sequenceiq.it.cloudbreak.newway.assertion.AssertionV2;
-import com.sequenceiq.it.cloudbreak.newway.cloud.v2.MockCloudProvider;
+import com.sequenceiq.it.cloudbreak.newway.cloud.v2.CloudProvider;
 import com.sequenceiq.it.cloudbreak.newway.context.RunningParameter;
 import com.sequenceiq.it.cloudbreak.newway.context.TestContext;
 import com.sequenceiq.it.cloudbreak.newway.entity.CloudbreakEntity;
@@ -29,10 +30,11 @@ public abstract class AbstractCloudbreakEntity<R, S, T extends CloudbreakEntity>
     private TestParameter testParameter;
 
     @Inject
-    private MockCloudProvider cloudProvider;
+    @Qualifier("cloudProviderProxy")
+    private CloudProvider cloudProvider;
 
     @Inject
-    private RandomNameCreator creator;
+    private RandomNameCreator randomNameCreator;
 
     private String name;
 
@@ -89,11 +91,11 @@ public abstract class AbstractCloudbreakEntity<R, S, T extends CloudbreakEntity>
         return testParameter;
     }
 
-    protected MockCloudProvider getCloudProvider() {
+    protected CloudProvider getCloudProvider() {
         return cloudProvider;
     }
 
-    protected TestContext getTestContext() {
+    public TestContext getTestContext() {
         return testContext;
     }
 
@@ -214,7 +216,7 @@ public abstract class AbstractCloudbreakEntity<R, S, T extends CloudbreakEntity>
     }
 
     public RandomNameCreator getNameCreator() {
-        return creator;
+        return randomNameCreator;
     }
 
     public <T extends CloudbreakEntity> T deleteGiven(Class<T> clazz, Action<T> action, RunningParameter runningParameter) {

@@ -87,7 +87,7 @@ public class KerberosTest extends AbstractIntegrationTest {
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testClusterCreationAttemptWithKerberosConfigWithoutName(MockedTestContext testContext) {
         mockAmbariBlueprintPassLdapSync(testContext);
-        String blueprintName = getNameGenerator().getRandomNameForMock();
+        String blueprintName = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(BlueprintEntity.class).withName(blueprintName).withAmbariBlueprint(BLUEPRINT_TEXT)
                 .when(Blueprint.postV4())
@@ -107,7 +107,7 @@ public class KerberosTest extends AbstractIntegrationTest {
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testClusterCreationAttemptWithKerberosConfigWithEmptyName(MockedTestContext testContext) {
         mockAmbariBlueprintPassLdapSync(testContext);
-        String blueprintName = getNameGenerator().getRandomNameForMock();
+        String blueprintName = getNameGenerator().getRandomNameForResource();
         KerberosV4Request request = KerberosTestData.AMBARI_DESCRIPTOR.getRequest();
         request.setName(extendNameWithGeneratedPart(request.getName()));
         testContext
@@ -131,7 +131,7 @@ public class KerberosTest extends AbstractIntegrationTest {
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testKerberosCreationAttemptWhenDescriptorIsAnInvalidJson(MockedTestContext testContext) {
         mockAmbariBlueprintPassLdapSync(testContext);
-        String blueprintName = getNameGenerator().getRandomNameForMock();
+        String blueprintName = getNameGenerator().getRandomNameForResource();
         KerberosV4Request request = KerberosTestData.AMBARI_DESCRIPTOR.getRequest();
         String descriptor = "{\"kerberos-env\":{\"properties\":{\"kdc_type\":\"mit-kdc\",\"kdc_hosts\":\"kdc-host-value\",\"admin_server_host\""
                 + ":\"admin-server-host-value\",\"realm\":\"realm-value\"}}";
@@ -149,7 +149,7 @@ public class KerberosTest extends AbstractIntegrationTest {
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testKerberosCreationAttemptWhenDescriptorDoesNotContainsAllTheRequiredFields(MockedTestContext testContext) {
         mockAmbariBlueprintPassLdapSync(testContext);
-        String blueprintName = getNameGenerator().getRandomNameForMock();
+        String blueprintName = getNameGenerator().getRandomNameForResource();
         KerberosV4Request request = KerberosTestData.AMBARI_DESCRIPTOR.getRequest();
         request.getAmbariDescriptor().setDescriptor(
                 Base64.encodeBase64String("{\"kerberos-env\":{\"properties\":{\"kdc_type\":\"mit-kdc\",\"kdc_hosts\":\"kdc-host-value\"}}}".getBytes()));
@@ -166,7 +166,7 @@ public class KerberosTest extends AbstractIntegrationTest {
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testKerberosCreationAttemptWhenKrb5ConfIsNotAValidJson(MockedTestContext testContext) {
         mockAmbariBlueprintPassLdapSync(testContext);
-        String blueprintName = getNameGenerator().getRandomNameForMock();
+        String blueprintName = getNameGenerator().getRandomNameForResource();
         KerberosV4Request request = KerberosTestData.AMBARI_DESCRIPTOR.getRequest();
         request.getAmbariDescriptor().setKrb5Conf(Base64.encodeBase64String("{".getBytes()));
         request.setName(extendNameWithGeneratedPart(request.getName()));
@@ -182,10 +182,10 @@ public class KerberosTest extends AbstractIntegrationTest {
     @DataProvider(name = "dataProviderForTest")
     public Object[][] provide() {
         return new Object[][]{
-                {applicationContext.getBean(MockedTestContext.class), getNameGenerator().getRandomNameForMock(), KerberosTestData.FREEIPA},
-                {applicationContext.getBean(MockedTestContext.class), getNameGenerator().getRandomNameForMock(), KerberosTestData.ACTIVE_DIRECTORY},
-                {applicationContext.getBean(MockedTestContext.class), getNameGenerator().getRandomNameForMock(), KerberosTestData.MIT},
-                {applicationContext.getBean(MockedTestContext.class), getNameGenerator().getRandomNameForMock(), KerberosTestData.AMBARI_DESCRIPTOR}
+                {applicationContext.getBean(MockedTestContext.class), getNameGenerator().getRandomNameForResource(), KerberosTestData.FREEIPA},
+                {applicationContext.getBean(MockedTestContext.class), getNameGenerator().getRandomNameForResource(), KerberosTestData.ACTIVE_DIRECTORY},
+                {applicationContext.getBean(MockedTestContext.class), getNameGenerator().getRandomNameForResource(), KerberosTestData.MIT},
+                {applicationContext.getBean(MockedTestContext.class), getNameGenerator().getRandomNameForResource(), KerberosTestData.AMBARI_DESCRIPTOR}
         };
     }
 
@@ -202,7 +202,7 @@ public class KerberosTest extends AbstractIntegrationTest {
     }
 
     private String extendNameWithGeneratedPart(String name) {
-        return String.format("%s-%s", name, getNameGenerator().getRandomNameForMock());
+        return String.format("%s-%s", name, getNameGenerator().getRandomNameForResource());
     }
 
     private enum KerberosTestData {

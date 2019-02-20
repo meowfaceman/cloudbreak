@@ -45,7 +45,7 @@ public class KubernetesTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testKubernetesCreationWithCorrectRequest(MockedTestContext testContext) {
-        String kubernetesName = getNameGenerator().getRandomNameForMock();
+        String kubernetesName = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(KubernetesTestDto.class)
                 .withName(kubernetesName)
@@ -57,7 +57,7 @@ public class KubernetesTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateDeleteCreate(TestContext testContext) {
-        String kubernetesName = getNameGenerator().getRandomNameForMock();
+        String kubernetesName = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(KubernetesTestDto.class)
                 .withName(kubernetesName)
@@ -77,7 +77,7 @@ public class KubernetesTest extends AbstractIntegrationTest {
 
     @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testCreateTwice(TestContext testContext) {
-        String kubernetesName = getNameGenerator().getRandomNameForMock();
+        String kubernetesName = getNameGenerator().getRandomNameForResource();
         testContext
                 .given(KubernetesTestDto.class)
                 .withName(kubernetesName)
@@ -114,7 +114,7 @@ public class KubernetesTest extends AbstractIntegrationTest {
                         " The length of the config's name has to be in range of 5 to 100"},
                 {applicationContext.getBean(TestContext.class), "a-@#$%|:&*;", KUBERNETES_CONTENT,
                         " The config's name can only contain lowercase alphanumeric characters and hyphens and has start with an alphanumeric character"},
-                {applicationContext.getBean(TestContext.class), getNameGenerator().getRandomNameForMock(), null,
+                {applicationContext.getBean(TestContext.class), getNameGenerator().getRandomNameForResource(), null,
                         "post.arg1.content: null, error: must not be null"}
         };
     }

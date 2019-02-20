@@ -4,7 +4,6 @@ import static com.sequenceiq.it.cloudbreak.newway.util.ResponseUtil.getErrorMess
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -24,14 +23,6 @@ public class EnvironmentEntity extends AbstractCloudbreakEntity<EnvironmentV4Req
         implements Purgable<SimpleEnvironmentV4Response> {
 
     public static final String ENVIRONMENT = "ENVIRONMENT";
-
-    public static final String EUROPE = "Europe";
-
-    public static final Set<String> VALID_REGION = Collections.singleton(EUROPE);
-
-    public static final String AVAILABILITY_ZONE = "London";
-
-    public static final String LONDON = "London";
 
     private Collection<SimpleEnvironmentV4Response> response;
 
@@ -56,11 +47,9 @@ public class EnvironmentEntity extends AbstractCloudbreakEntity<EnvironmentV4Req
 
     @Override
     public EnvironmentEntity valid() {
-        return withName(getNameCreator().getRandomNameForMock())
+        return getCloudProvider().environment(withName(getNameCreator().getRandomNameForResource())
                 .withDescription("Description for environment")
-                .withRegions(VALID_REGION)
-                .withLocation(LONDON)
-                .withCredentialName(getTestContext().get(CredentialTestDto.class).getName());
+                .withCredentialName(getTestContext().get(CredentialTestDto.class).getName()));
     }
 
     public EnvironmentEntity withName(String name) {

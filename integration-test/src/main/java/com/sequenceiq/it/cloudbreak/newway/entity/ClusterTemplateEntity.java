@@ -27,7 +27,7 @@ public class ClusterTemplateEntity extends AbstractCloudbreakEntity<ClusterTempl
     }
 
     public ClusterTemplateEntity valid() {
-        return withName(getNameCreator().getRandomNameForMock())
+        return withName(getNameCreator().getRandomNameForResource())
                 .withStackTemplate(getTestContext().init(StackTemplateEntity.class));
     }
 
