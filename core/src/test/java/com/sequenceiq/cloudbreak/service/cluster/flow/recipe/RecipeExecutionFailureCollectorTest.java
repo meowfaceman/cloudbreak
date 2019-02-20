@@ -50,6 +50,36 @@ public class RecipeExecutionFailureCollectorTest {
         assertTrue(recipeExecutionFailureHandler.canProcessExecutionFailure(exception));
     }
 
+
+    @Test
+    public void testRecipePhaseExtract() {
+        String example = "Name: /opt/scripts/recipe-runner.sh pre-ambari-start lnardai-failing-recipe";
+        String result = recipeExecutionFailureHandler.getRecipePhase(example);
+        assertEquals("pre-ambari-start", result);
+    }
+
+    @Test
+    public void testRecipePhaseMultiline() {
+        String example = getSingleLineError();
+        String result = recipeExecutionFailureHandler.getRecipePhase(example);
+        assertEquals("post-ambari-start", result);
+    }
+
+    @Test
+    public void testCollectErros2() {
+        String example = getSingleLineError();
+        String result = recipeExecutionFailureHandler.getRecipePhase(example);
+        ArrayListMultimap<String, String> nodesWithErrors = getNodesWithErrors();
+        CloudbreakOrchestratorFailedException exception = new CloudbreakOrchestratorFailedException(EXCEPTION_MESSAGE, nodesWithErrors);
+        List<RecipeExecutionFailureCollector.RecipeFailure> failure = recipeExecutionFailureHandler.collectErrors2(exception);
+        assertEquals(3, failure.size());
+        assertEquals("failingRecipe1", failure.get(0).getRecipeName());
+        assertEquals("post-ambari-start", failure.get(0).getPhase());
+
+        assertEquals("failingRecipe2", failure.get(1).getRecipeName());
+        assertEquals("pre-ambari-start", failure.get(1).getPhase());
+    }
+
     @Test
     public void testCollectErrors() {
         ArrayListMultimap<String, String> nodesWithErrors = getNodesWithErrors();
@@ -124,17 +154,25 @@ public class RecipeExecutionFailureCollectorTest {
 
     private ArrayListMultimap<String, String> getNodesWithErrors() {
         ArrayListMultimap<String, String> nodesWithErrors = ArrayListMultimap.create();
-        nodesWithErrors.putAll("host-10-0-0-4.openstacklocal", Arrays.asList(
+        nodesWithErrors.putAll("host-10-0-0-4.openstacklocal", getMultiLineError());
+        nodesWithErrors.put("host-10-0-0-3.openstacklocal", getSingleLineError());
+        return nodesWithErrors;
+    }
+
+
+    private List<String> getMultiLineError(){
+        return Arrays.asList(
                 "\"Comment: Command \"/opt/scripts/recipe-runner.sh post-ambari-start failingRecipe1\" run\n"
                         + "Stdout: /opt/scripts/recipe-runner.sh post-ambari-start failingRecipe1 : Timed out after 10 seconds\"",
                 "\"Comment: Command \"/opt/scripts/recipe-runner.sh pre-ambari-start failingRecipe2\" run\n"
                         + "Stdout: /opt/scripts/recipe-runner.sh pre-ambari-start failingRecipe2 : Timed out after 10 seconds\"",
                 "Comment: One or more requisite failed: postgresql.init-services-db, postgresql.configure-listen-address",
                 "Comment: One or more requisite failed: postgresql.init-services-db, postgresql.configure-listen-address"
-        ));
-        nodesWithErrors.put("host-10-0-0-3.openstacklocal",
-                "\"Comment: Command \"/opt/scripts/recipe-runner.sh post-ambari-start failingRecipe1\" run\n"
-                        + "Stdout: /opt/scripts/recipe-runner.sh post-ambari-start failingRecipe1 : Timed out after 10 seconds\"");
-        return nodesWithErrors;
+        );
+    }
+
+    private String getSingleLineError(){
+        return "\"Comment: Command \"/opt/scripts/recipe-runner.sh post-ambari-start failingRecipe1\" run\n"
+                + "Stdout: /opt/scripts/recipe-runner.sh post-ambari-start failingRecipe1 : Timed out after 10 seconds\"";
     }
 }

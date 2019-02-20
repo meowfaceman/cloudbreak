@@ -1,5 +1,6 @@
 package com.sequenceiq.cloudbreak.service.cluster.flow.recipe;
 
+import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,8 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,8 +28,27 @@ import com.sequenceiq.cloudbreak.service.CloudbreakServiceException;
 @Component
 public class RecipeExecutionFailureCollector {
 
+    private static final Pattern PHASE_PATTERN = Pattern.compile(".*/opt/scripts/recipe-runner\\.sh ([a-zA-Z0-9-]+) (([a-zA-Z0-9-]+)).*", Pattern.DOTALL);
+
     public boolean canProcessExecutionFailure(CloudbreakOrchestratorException exception) {
         return !getNodesWithErrors(exception).isEmpty() && exception.getMessage().contains("/opt/scripts/recipe-runner.sh ");
+    }
+
+    public List<RecipeFailure> collectErrors2(CloudbreakOrchestratorException exception) {
+        Multimap<String, String> nodesWithErrors = getNodesWithErrors(exception);
+
+        if (nodesWithErrors.isEmpty()) {
+            throw new CloudbreakServiceException("Failed to collect recipe execution failures. Cause exception contains no information.", exception);
+        }
+
+        List<RecipeFailure> failures = nodesWithErrors.asMap().entrySet().stream()
+                .flatMap(e->e.getValue().stream()
+                        .map(v->new AbstractMap.SimpleImmutableEntry<>(e.getKey(), v))
+                        .map(failure -> new RecipeFailure(failure.getKey(), getRecipePhase(failure.getValue()), getFailedRecipeName(failure.getValue()))))
+                        .filter(failure -> !failure.getRecipeName().isEmpty() && !failure.getPhase().isEmpty())
+                .collect(Collectors.toList());
+
+        return failures;
     }
 
     public Set<RecipeExecutionFailure> collectErrors(CloudbreakOrchestratorException exception, Map<HostGroup, List<RecipeModel>> hostgroupToRecipeMap,
@@ -78,6 +100,24 @@ public class RecipeExecutionFailureCollector {
         return errors;
     }
 
+
+    protected String getFailedRecipeName(String message) {
+        Matcher matcher = PHASE_PATTERN.matcher(message);
+        if(matcher.matches()) {
+            return matcher.group(2);
+        }
+        return "";
+    }
+
+
+    protected String getRecipePhase(String message) {
+        Matcher matcher = PHASE_PATTERN.matcher(message);
+        if(matcher.matches()){
+            return matcher.group(1);
+        }
+        return "";
+    }
+
     private Optional<String> getInstallPhase(String message) {
         String phaseString = StringUtils.substringAfter(message, "/opt/scripts/recipe-runner.sh ");
         if (phaseString.startsWith("pre-termination")) {
@@ -119,6 +159,30 @@ public class RecipeExecutionFailureCollector {
                 .filter(ig -> ig.getGroupName().equals(hostGroupName)).findFirst()
                 .flatMap(instanceGroup -> instanceGroup.getNotDeletedInstanceMetaDataSet().stream()
                         .filter(imd -> imd.getDiscoveryFQDN().equals(host)).findFirst());
+    }
+
+
+    public static class RecipeFailure {
+
+        private String host;
+
+        private String phase;
+
+        private String recipeName;
+
+        public RecipeFailure(String host, String phase, String recipeName) {
+            this.host = host;
+            this.phase = phase;
+            this.recipeName = recipeName;
+        }
+
+        public String getPhase() {
+            return phase;
+        }
+
+        public String getRecipeName() {
+            return recipeName;
+        }
     }
 
     public static class RecipeExecutionFailure {
