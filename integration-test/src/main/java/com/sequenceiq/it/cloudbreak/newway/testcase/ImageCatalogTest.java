@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import com.sequenceiq.cloudbreak.api.endpoint.v4.imagecatalog.responses.ImageCatalogV4Response;
 import com.sequenceiq.it.cloudbreak.newway.action.imagecatalog.ImageCatalogDeleteAction;
 import com.sequenceiq.it.cloudbreak.newway.action.imagecatalog.ImageCatalogPostAction;
+import com.sequenceiq.it.cloudbreak.newway.context.MockedTestContext;
 import com.sequenceiq.it.cloudbreak.newway.context.RunningParameter;
 import com.sequenceiq.it.cloudbreak.newway.context.TestContext;
 import com.sequenceiq.it.cloudbreak.newway.entity.ImageCatalogEntity;
@@ -41,12 +42,13 @@ public class ImageCatalogTest extends AbstractIntegrationTest {
         ((TestContext) data[0]).cleanupTestContextEntity();
     }
 
-    @Test(dataProvider = "testContext")
+    @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testImageCatalogCreationWhenURLIsValidAndExists(TestContext testContext) {
         String imgCatalogName = getNameGenerator().getRandomNameForMock();
+        MockedTestContext mockedTestContext = (MockedTestContext) testContext;
 
         testContext
-                .given(ImageCatalogEntity.class).withName(imgCatalogName).withUrl(IMG_CATALOG_URL)
+                .given(ImageCatalogEntity.class).withName(imgCatalogName).withUrl(mockedTestContext.getImageCatalogMockServerSetup().getImageCatalogUrl())
                 .when(new ImageCatalogPostAction())
                 .then((testContext1, entity, cloudbreakClient) -> {
                     cloudbreakClient.getCloudbreakClient().imageCatalogV4Endpoint().get(cloudbreakClient.getWorkspaceId(), imgCatalogName, false);
@@ -55,7 +57,7 @@ public class ImageCatalogTest extends AbstractIntegrationTest {
                 .validate();
     }
 
-    @Test(dataProvider = "testContext")
+    @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testImageCatalogCreationWhenNameIsTooShort(TestContext testContext) {
         String imgCatalogName = getNameGenerator().getRandomNameForMock().substring(0, 4);
 
@@ -67,7 +69,7 @@ public class ImageCatalogTest extends AbstractIntegrationTest {
                 .validate();
     }
 
-    @Test(dataProvider = "testContext")
+    @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testImageCatalogCreationWhenNameIsTooLong(TestContext testContext) {
         String imgCatalogName = getNameGenerator().getRandomNameForMock().concat(longStringGeneratorUtil.stringGenerator(100));
 
@@ -90,7 +92,7 @@ public class ImageCatalogTest extends AbstractIntegrationTest {
                 .validate();
     }
 
-    @Test(dataProvider = "testContext")
+    @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testImageCatalogCreationWhenTheCatalogURLIsInvalid(TestContext testContext) {
         String imgCatalogName = getNameGenerator().getRandomNameForMock();
         String invalidURL = "https:/google.com/imagecatalog";
@@ -103,7 +105,7 @@ public class ImageCatalogTest extends AbstractIntegrationTest {
                 .validate();
     }
 
-    @Test(dataProvider = "testContext")
+    @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testImageCatalogCreationWhenTheCatalogURLPointsNotToAnImageCatalogJson(TestContext testContext) {
         String imgCatalogName = getNameGenerator().getRandomNameForMock();
 
@@ -115,7 +117,7 @@ public class ImageCatalogTest extends AbstractIntegrationTest {
                 .validate();
     }
 
-    @Test(dataProvider = "testContext")
+    @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testImageCatalogCreationWhenTheCatalogURLPointsToAnInvalidImageCatalogJson(TestContext testContext) {
         String imgCatalogName = getNameGenerator().getRandomNameForMock();
 
@@ -127,12 +129,13 @@ public class ImageCatalogTest extends AbstractIntegrationTest {
                 .validate();
     }
 
-    @Test(dataProvider = "testContext")
+    @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testImageCatalogCreationWhenCatalogWithTheSameNameDeletedRightBeforeCreation(TestContext testContext) {
         String imgCatalogName = getNameGenerator().getRandomNameForMock();
+        MockedTestContext mockedTestContext = (MockedTestContext) testContext;
 
         testContext
-                .given(ImageCatalogEntity.class).withName(imgCatalogName).withUrl(IMG_CATALOG_URL)
+                .given(ImageCatalogEntity.class).withName(imgCatalogName).withUrl(mockedTestContext.getImageCatalogMockServerSetup().getImageCatalogUrl())
                 .when(new ImageCatalogPostAction())
                 .select(imgCatalog -> imgCatalog.getResponse().getId(), RunningParameter.key("ImageCatalogPostActionSelect"))
                 .when(new ImageCatalogDeleteAction())
@@ -149,7 +152,7 @@ public class ImageCatalogTest extends AbstractIntegrationTest {
                 .validate();
     }
 
-    @Test(dataProvider = "testContext")
+    @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testImageCatalogDeletion(TestContext testContext) {
         String imgCatalogName = getNameGenerator().getRandomNameForMock();
 
@@ -166,7 +169,7 @@ public class ImageCatalogTest extends AbstractIntegrationTest {
                 .validate();
     }
 
-    @Test(dataProvider = "testContext")
+    @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testImageCatalogDeletionWithDefaultImageCatalog(TestContext testContext) {
         testContext
                 .given(ImageCatalogEntity.class).withName(CB_DEFAULT_IMG_CATALOG_NAME)
@@ -177,7 +180,7 @@ public class ImageCatalogTest extends AbstractIntegrationTest {
                 .validate();
     }
 
-    @Test(dataProvider = "testContext")
+    @Test(dataProvider = TEST_CONTEXT_WITH_MOCK)
     public void testGetDefaultImageCatalog(TestContext testContext) {
         testContext
                 .given(ImageCatalogEntity.class).withName(CB_DEFAULT_IMG_CATALOG_NAME)
