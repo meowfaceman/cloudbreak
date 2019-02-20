@@ -17,6 +17,7 @@ import org.testng.annotations.Test;
 import com.sequenceiq.it.cloudbreak.newway.action.credential.CredentialTestAction;
 import com.sequenceiq.it.cloudbreak.newway.assertion.credential.CredentialTestAssertion;
 import com.sequenceiq.it.cloudbreak.newway.context.MockedTestContext;
+import com.sequenceiq.it.cloudbreak.newway.context.RunningParameter;
 import com.sequenceiq.it.cloudbreak.newway.entity.credential.CredentialTestDto;
 import com.sequenceiq.it.util.LongStringGeneratorUtil;
 
@@ -110,9 +111,7 @@ public class CredentialTest extends AbstractIntegrationTest {
                 .given(CredentialTestDto.class)
                 .withName(credentialName)
                 .when(CredentialTestAction::create, key(BAD_REQUEST_KEY))
-                .expect(BadRequestException.class, exceptionConsumer(e -> {
-                    assertThat(e.getMessage(), getErrorMessage(e), containsString(expectedErrorMessage));
-                }).withKey(BAD_REQUEST_KEY))
+                .expect(BadRequestException.class, withExpectedErrorMessage(expectedErrorMessage).withKey(BAD_REQUEST_KEY))
                 .validate();
     }
 
@@ -130,4 +129,9 @@ public class CredentialTest extends AbstractIntegrationTest {
                         "error: must not be null"}
         };
     }
+
+    private RunningParameter withExpectedErrorMessage(String expectedErrorMessage) {
+        return exceptionConsumer(e -> assertThat(e.getMessage(), getErrorMessage(e), containsString(expectedErrorMessage)));
+    }
+
 }
