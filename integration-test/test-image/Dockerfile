@@ -14,7 +14,7 @@ RUN unzip -o cloudbreak.jar BOOT-INF/classes/schema/* -d /tmp/ \
 RUN wget https://raw.githubusercontent.com/hortonworks/docker-cloudbreak/master/bootstrap/start_cloudbreak_app.sh -o /start_cloudbreak_app.sh && \
     chmod +x /start_cloudbreak_app.sh
 RUN wget https://raw.githubusercontent.com/hortonworks/docker-cloudbreak/master/bootstrap/wait_for_cloudbreak_api.sh -o /wait_for_cloudbreak_api.sh && \
-    chmod +x wait_for_cloudbreak_api.sh
+    chmod +x /wait_for_cloudbreak_api.sh
 RUN wget https://raw.githubusercontent.com/hortonworks/docker-cloudbreak/master/jmx_prometheus_javaagent-0.10.jar -o /jmx_prometheus_javaagent-0.10.jar
 
 ENTRYPOINT ["/start_cloudbreak_app.sh"]
