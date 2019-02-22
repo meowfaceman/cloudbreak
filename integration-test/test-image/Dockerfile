@@ -15,7 +15,7 @@ RUN ( unzip cloudbreak.jar schema/* -d / ) || \
 # Install starter script for the Cloudbreak application
 RUN wget https://raw.githubusercontent.com/hortonworks/docker-cloudbreak/master/bootstrap/start_cloudbreak_app.sh
 RUN wget https://raw.githubusercontent.com/hortonworks/docker-cloudbreak/master/bootstrap/wait_for_cloudbreak_api.sh
-RUN wget https://github.com/hortonworks/docker-cloudbreak/blob/master/jmx_prometheus_javaagent-0.10.jar?raw=true
+RUN wget https://raw.githubusercontent.com/hortonworks/docker-cloudbreak/master/jmx_prometheus_javaagent-0.10.jar
 
 # extract schema files
 RUN unzip -o cloudbreak.jar BOOT-INF/classes/schema/* -d /tmp/ \
