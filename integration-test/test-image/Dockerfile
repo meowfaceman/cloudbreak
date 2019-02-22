@@ -1,6 +1,8 @@
 FROM openjdk:11-jdk-slim
 MAINTAINER info@hortonworks.com
 
+WORKDIR /
+
 # Install zip
 RUN apt-get update --no-install-recommends && apt-get install -y zip procps wget && apt-get clean && rm -rf /var/lib/apt/lists/*
 
